@@ -4,10 +4,33 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 from sklearn.impute import SimpleImputer
 import joblib
+import os
 
 
 #INTRO
 st.title("House Pricing Prediction")
+
+#LOAD IN TRAINED MODEL FROM SAV FILE
+loaded_random_forest_file = 'sav_files/ran_for_model.sav'
+loaded_random_forest_model = None
+
+#CHECK IF THE MODEL FILE EXISTS OTHERWISE CREATE AN EMPTY FILE
+os.makedirs(os.path.dirname(loaded_random_forest_file), exist_ok=True)
+
+if not os.path.exists(loaded_random_forest_file):
+    with open(loaded_random_forest_file, 'w') as file:
+        file.write('')
+    st.warning('Model file was not found. An empty file has been created at ' + loaded_random_forest_file + '. Please wait while I create a new model for you.')
+elif os.path.getsize(loaded_random_forest_file) == 0:
+    st.warning('Model file at ' + loaded_random_forest_file + ' is empty. Please wait while I create a new model for you.')
+else:
+    try:
+        loaded_random_forest_model = joblib.load(loaded_random_forest_file)
+        st.success('Model loaded successfully!')
+    except EOFError:
+        st.warning('The model file at' + loaded_random_forest_file + 'is corrupted or incomplete.')
+    except Exception as e:
+        st.warning('An error occurred while loading the model:' + e)
 
 #LOAD IN CSV FILE
 csvFile = pd.read_csv('housing.csv')
@@ -38,12 +61,7 @@ imputer = SimpleImputer(strategy='mean')
 X_train = imputer.fit_transform(X_train)
 X_test = imputer.transform(X_test)
 
-#LOAD IN FOREST MODEL FROM FILE
-random_forest_file = 'sav_files/ran_for_model.sav'
-random_forest_model = joblib.load(random_forest_file)
-
 #INPUT
-
 housing_median_age = st.number_input('Housing Median Age', value=None, step=1,  placeholder='Type a number...')
 total_rooms = st.number_input('Total Rooms', value=None, step=1, placeholder='Type a number...')
 total_bedrooms = st.number_input('Total Bedrooms', value=None, step=1, placeholder='Type a number...')
@@ -74,5 +92,5 @@ if calculate_button:
                   })
     
     df = pd.DataFrame(data)
-    pred_price = int(random_forest_model.predict(df))
+    pred_price = int(loaded_random_forest_model.predict(df))
     st.write("The predicted house price is: $", str(pred_price))
