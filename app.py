@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
+from sklearn.impute import SimpleImputer
 import joblib
 
 
@@ -29,6 +30,13 @@ y = csvFile['median_house_value']
 
 # SPLIT DATA
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+#FILL MISSING VALUES WITH MEAN
+#Due to the data having NAN values, we have to Impute data to be able to use predict method.
+#We do this by using the SimpleImputer with the mean strategy.
+imputer = SimpleImputer(strategy='mean')
+X_train = imputer.fit_transform(X_train)
+X_test = imputer.transform(X_test)
 
 #LOAD IN FOREST MODEL FROM FILE
 random_forest_file = 'sav_files/ran_for_model.sav'

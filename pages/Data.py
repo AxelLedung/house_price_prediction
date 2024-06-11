@@ -3,9 +3,15 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OrdinalEncoder
 
+#INTRO
+st.title("Data")
 
 #LOAD IN CSV FILE
 csvFile = pd.read_csv('housing.csv')
+
+#RAW DATA
+st.subheader("Raw data")
+st.write(csvFile)
 
 #SEPERATE OCEAN PROXIMITY INTO ORDINAL CATEGORIES
 unique_categories = csvFile['ocean_proximity'].unique()
