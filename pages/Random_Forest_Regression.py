@@ -71,7 +71,7 @@ st.write("RMSE Test data / y mean: ",(RMSE_test_data)/(np.mean(y_test)))
 
 
 #DUMP MODEL INTO FILE
-random_forest_file = 'ran_for_model.sav'
+random_forest_file = 'sav_files/ran_for_model.sav'
 joblib.dump(forest, random_forest_file)#
 
 #LOAD IN MODEL FROM FILE

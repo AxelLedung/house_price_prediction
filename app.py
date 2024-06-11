@@ -31,7 +31,7 @@ y = csvFile['median_house_value']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
 #LOAD IN FOREST MODEL FROM FILE
-random_forest_file = 'ran_for_model.sav'
+random_forest_file = 'sav_files/ran_for_model.sav'
 random_forest_model = joblib.load(random_forest_file)
 
 #INPUT
