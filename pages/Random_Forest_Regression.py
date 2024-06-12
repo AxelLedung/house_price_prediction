@@ -84,17 +84,12 @@ scores_forest = cross_validate(forest_reg, X_train, y_train, cv=5, scoring = 'ne
 st.write('RMSE for each iteration:', np.sqrt(-scores_forest))
 st.write('RMSE:', np.sqrt(np.mean(-scores_forest)))
 
-
-#FIT FOREST REGRESSION
-forest.fit(X_train, y_train)
-y_test.plot.box()
-
 #PREDICT FOREST REGRESSION
-y_test_pred_forest = forest.predict(X_test)
+y_test_pred_forest = forest_reg.predict(X_test)
 RMSE_test_data = mean_squared_error(y_test, y_test_pred_forest, squared = False)
 st.write("RMSE Test data: ", RMSE_test_data)
 st.write("RMSE Test data / y mean: ",(RMSE_test_data)/(np.mean(y_test)))
 
 
 #DUMP MODEL INTO FILE
-joblib.dump(forest, loaded_random_forest_file)
+joblib.dump(forest_reg, loaded_random_forest_file)
